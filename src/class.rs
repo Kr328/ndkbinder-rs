@@ -118,7 +118,7 @@ pub fn _new_ibinder_with_class<T: Class>(class: usize, binder: T) -> IBinder {
 #[macro_export]
 macro_rules! define_class {
     ($class:ty) => {
-        impl std::convert::Into<$crate::IBinder> for $class {
+        impl ::std::convert::Into<$crate::IBinder> for $class {
             fn into(self) -> $crate::IBinder {
                 static CLASS: ::std::sync::OnceLock<usize> = ::std::sync::OnceLock::new();
 
