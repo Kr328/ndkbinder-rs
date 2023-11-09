@@ -1,0 +1,22 @@
+[package]
+name = "ndkbinder-rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = ["jni"]
+jni = ["dep:jni-sys"]
+service_manager = ["dep:libc"]
+api-30 = []
+api-31 = ["api-30"]
+api-33 = ["api-31"]
+
+[dependencies]
+jni-sys = { version = "0.4", optional = true }
+libc = { version = "0.2", optional = true }
+
+[dev-dependencies]
+libc = "0.2"
+fake = { version = "2.9", features = ["derive"] }
