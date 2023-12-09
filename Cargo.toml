@@ -20,3 +20,6 @@ libc = { version = "0.2", optional = true }
 [dev-dependencies]
 libc = "0.2"
 fake = { version = "2.9", features = ["derive"] }
+
+[build-dependencies]
+bindgen = "0.69"
