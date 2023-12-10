@@ -1,13 +1,11 @@
-use std::{
-    ffi::CString,
-    os::fd::{AsFd, AsRawFd, BorrowedFd, FromRawFd, OwnedFd, RawFd},
-};
+use std::{ffi::CString, os::fd::*};
 
-use fake::{Dummy, Fake, Faker};
+use fake::*;
 
-use crate::{define_class, Class, Code, Exception, IBinder, Parcel, Status};
+use crate::*;
 
 #[test]
+#[cfg(feature = "api-31")]
 fn parcel_basic() {
     #[derive(Debug, Dummy)]
     struct Parcelables {
@@ -82,6 +80,7 @@ fn parcel_basic() {
 }
 
 #[test]
+#[cfg(feature = "api-31")]
 fn parcel_alive_obj() {
     let pipe = unsafe {
         let mut pipe: [RawFd; 2] = [0; 2];
@@ -134,6 +133,7 @@ fn parcel_alive_obj() {
 }
 
 #[test]
+#[cfg(feature = "api-31")]
 fn parcel_parcelable_array() {
     for _ in 0..100 {
         let data: Option<Vec<Option<String>>> = Faker.fake();
@@ -150,6 +150,7 @@ fn parcel_parcelable_array() {
 }
 
 #[test]
+#[cfg(feature = "api-31")]
 fn parcel_status() {
     let mut parcel = Parcel::new();
 
@@ -186,6 +187,7 @@ fn parcel_status() {
 }
 
 #[test]
+#[cfg(feature = "api-31")]
 fn binder_local_transact() {
     struct LocalService;
 
