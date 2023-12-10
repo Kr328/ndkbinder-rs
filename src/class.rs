@@ -5,6 +5,7 @@ use std::{
         fd::RawFd,
         raw::{c_char, c_int, c_void},
     },
+    sync::Arc,
 };
 
 use crate::{
@@ -32,6 +33,25 @@ pub trait Class: Send + Sync {
         Err(Status::unknown_transaction())
     }
 }
+
+macro_rules! impl_delegated {
+    ($typ:ty) => {
+        impl<T: Class> Class for $typ {
+            const INTERFACE_NAME: &'static str = T::INTERFACE_NAME;
+
+            fn on_transact(&self, code: u32, data: &Parcel, reply: Option<&mut Parcel>) -> Result<(), Status> {
+                <$typ as AsRef<T>>::as_ref(self).on_transact(code, data, reply)
+            }
+
+            fn on_dump(&self, fd: RawFd, args: &[&str]) -> Result<(), Status> {
+                <$typ as AsRef<T>>::as_ref(self).on_dump(fd, args)
+            }
+        }
+    };
+}
+
+impl_delegated!(Box<T>);
+impl_delegated!(Arc<T>);
 
 #[doc(hidden)]
 pub fn _define_class_impl<T: Class>() -> usize {
